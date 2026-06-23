@@ -11,42 +11,24 @@ export function Navbar() {
   }
 
   return (
-    <nav className="bg-gray-900 border-b border-gray-800 px-6 py-3 flex items-center justify-between">
-      <div className="flex items-center gap-6">
-        <span className="text-purple-400 font-bold tracking-wide text-sm">
-          TropelCare Control Room
+    <nav className="bg-gray-900 border-b border-gray-800 px-4 py-3 flex flex-wrap items-center justify-between gap-y-2">
+      <div className="flex items-center gap-4 flex-wrap">
+        <span className="text-purple-400 font-bold tracking-wide text-sm whitespace-nowrap">
+          TropelCare
         </span>
-        <Link
-          to="/dashboard"
-          className="text-gray-400 hover:text-white text-sm transition-colors"
-        >
-          Dashboard
-        </Link>
-        <Link
-          to="/tropels"
-          className="text-gray-400 hover:text-white text-sm transition-colors"
-        >
-          Tropeles
-        </Link>
-        <Link
-          to="/signals"
-          className="text-gray-400 hover:text-white text-sm transition-colors"
-        >
-          Señales
-        </Link>
-        <Link
-          to="/sectors"
-          className="text-gray-400 hover:text-white text-sm transition-colors"
-        >
-          Sectores
-        </Link>
+        <div className="flex items-center gap-3 flex-wrap">
+          <Link to="/dashboard" className="text-gray-400 hover:text-white text-xs transition-colors">Dashboard</Link>
+          <Link to="/tropels" className="text-gray-400 hover:text-white text-xs transition-colors">Tropeles</Link>
+          <Link to="/signals" className="text-gray-400 hover:text-white text-xs transition-colors">Señales</Link>
+          <Link to="/sectors" className="text-gray-400 hover:text-white text-xs transition-colors">Sectores</Link>
+        </div>
       </div>
-      <div className="flex items-center gap-4">
-        <span className="text-gray-500 text-xs">{user?.teamCode}</span>
-        <span className="text-gray-300 text-sm">{user?.displayName}</span>
+      <div className="flex items-center gap-2">
+        <span className="text-gray-500 text-xs hidden sm:inline">{user?.teamCode}</span>
+        <span className="text-gray-300 text-xs">{user?.displayName}</span>
         <button
           onClick={handleLogout}
-          className="text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-1.5 rounded transition-colors"
+          className="text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 px-2 py-1.5 rounded transition-colors whitespace-nowrap"
         >
           Cerrar sesión
         </button>

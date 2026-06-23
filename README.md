@@ -34,7 +34,7 @@ pnpm typecheck  # verificación de tipos sin emitir
 Crea un archivo `.env.local` en la raíz del proyecto:
 
 ```properties
-VITE_API_BASE_URL=https://hackaton-20261-front-587720740455.us-east1.run.app/api/v1
+VITE_API_BASE_URL=/api/v1
 ```
 
 ## Decisiones técnicas

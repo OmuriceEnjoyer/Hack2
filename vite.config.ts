@@ -4,4 +4,12 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  server: {
+    proxy: {
+      '/api/v1': {
+        target: 'https://hackaton-20261-front-587720740455.us-east1.run.app',
+        changeOrigin: true,
+      },
+    },
+  },
 })

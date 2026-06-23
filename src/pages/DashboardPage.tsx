@@ -72,7 +72,7 @@ export function DashboardPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <KpiCard label="Total Tropeles" value={data.totalTropels} />
         <KpiCard label="Tropeles Críticos" value={data.criticalTropels} accent="red" />
         <KpiCard label="Señales Abiertas" value={data.openSignals} accent="yellow" />
