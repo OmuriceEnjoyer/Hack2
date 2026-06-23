@@ -34,6 +34,12 @@ export function Navbar() {
         >
           Señales
         </Link>
+        <Link
+          to="/sectors"
+          className="text-gray-400 hover:text-white text-sm transition-colors"
+        >
+          Sectores
+        </Link>
       </div>
       <div className="flex items-center gap-4">
         <span className="text-gray-500 text-xs">{user?.teamCode}</span>

@@ -7,6 +7,7 @@ import { DashboardPage } from './pages/DashboardPage';
 import { TropelsPage } from './pages/TropelsPage';
 import { SignalsFeedPage } from './pages/SignalsFeedPage';
 import { SignalDetailPage } from './pages/SignalDetailPage';
+import { SectorsPage } from './pages/SectorsPage';
 import { SectorStoryPage } from './pages/SectorStoryPage';
 
 function AppLayout() {
@@ -38,6 +39,7 @@ export default function App() {
             <Route path="/tropels" element={<TropelsPage />} />
             <Route path="/signals" element={<SignalsFeedPage />} />
             <Route path="/signals/:id" element={<SignalDetailPage />} />
+            <Route path="/sectors" element={<SectorsPage />} />
             <Route path="/sectors/:id/story" element={<SectorStoryPage />} />
           </Route>
 

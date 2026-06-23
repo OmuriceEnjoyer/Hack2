@@ -1,0 +1,352 @@
+/* Sector Story Engine — Checkpoint 5
+   Scroll-driven scrollytelling with graceful fallback, reduced-motion support,
+   keyboard navigation and a responsive sticky layout. */
+
+.story {
+  --story-gap: clamp(2rem, 6vh, 6rem);
+  color: #e5e7eb;
+}
+
+.story__header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 0;
+}
+
+.story__back {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.story__back:hover,
+.story__back:focus-visible {
+  color: #fff;
+}
+
+.story__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* Two columns on desktop, single column on mobile. */
+.story__layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .story__layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    align-items: start;
+  }
+}
+
+/* Persistent visual — sticky on both desktop and mobile. */
+.story-visual {
+  position: sticky;
+  top: 1rem;
+  z-index: 1;
+  min-height: 16rem;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow: 0 20px 60px -30px rgba(0, 0, 0, 0.8);
+}
+
+@media (min-width: 768px) {
+  .story-visual {
+    top: 2rem;
+    min-height: 22rem;
+  }
+}
+
+.story-visual__orb {
+  position: absolute;
+  inset: -20% 40% 50% -10%;
+  z-index: -1;
+  background: radial-gradient(
+    circle at 30% 30%,
+    var(--stage-glow, #a78bfa),
+    transparent 60%
+  );
+  filter: blur(12px);
+  opacity: 0.85;
+  animation: orb-float 6s ease-in-out infinite alternate;
+  transition: background 0.6s ease;
+}
+
+@keyframes orb-float {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(8%, 10%, 0) scale(1.15);
+  }
+}
+
+.story-visual__content {
+  position: relative;
+}
+
+.story-visual__sector {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.story-visual__event {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: var(--stage-color, #8b5cf6);
+  font-size: 0.7rem;
+  color: #fff;
+}
+
+.story-visual__stage-title {
+  margin-top: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.story-visual__metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+.story-visual__metrics dt {
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+.story-visual__metrics dd {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  transition: color 0.3s ease;
+}
+
+.story-visual__counter {
+  margin-top: 1.5rem;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Scrolling narrative column. */
+.story__stages {
+  display: flex;
+  flex-direction: column;
+  gap: var(--story-gap);
+  padding-bottom: 60vh; /* let the last stage reach the viewport center */
+}
+
+.story-stage {
+  scroll-margin-block: 40vh;
+  padding-left: 1.25rem;
+  border-left: 2px solid rgba(148, 163, 184, 0.2);
+  outline: none;
+  opacity: 1; /* fallback: always readable without scroll-driven support */
+}
+
+.story-stage:focus-visible {
+  border-left-color: #fff;
+  box-shadow: -4px 0 0 0 rgba(167, 139, 250, 0.4);
+}
+
+.story-stage--active {
+  border-left-color: #a78bfa;
+}
+
+.story-stage__order {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: #6b7280;
+}
+
+.story-stage__title {
+  margin-top: 0.25rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.story-stage__event {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #a78bfa;
+}
+
+.story-stage__narrative {
+  margin-top: 0.75rem;
+  line-height: 1.7;
+  color: #cbd5e1;
+}
+
+.story-stage__metrics {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+.story-stage__metrics dt {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+.story-stage__metrics dd {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+/* Progress indicator. */
+.story-progress {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(
+    to bottom,
+    rgba(3, 7, 18, 0.95),
+    rgba(3, 7, 18, 0)
+  );
+  backdrop-filter: blur(4px);
+}
+
+.story-progress__track {
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.2);
+  overflow: hidden;
+}
+.story-progress__fill {
+  height: 100%;
+  background: #a78bfa;
+  transition: width 0.4s ease;
+}
+
+.story-progress__dots {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0.6rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.story-progress__dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+.story-progress__dot:hover,
+.story-progress__dot:focus-visible {
+  border-color: #fff;
+  outline: none;
+}
+.story-progress__dot.is-active {
+  background: #a78bfa;
+  border-color: #a78bfa;
+  transform: scale(1.2);
+}
+
+/* Sector cards — the "resumen" origin for the View Transition. */
+.story-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-height: 8rem;
+  padding: 1.25rem;
+  border-radius: 0.9rem;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.story-card:hover,
+.story-card:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.9);
+  outline: 2px solid #a78bfa;
+  outline-offset: 2px;
+}
+.story-card__code {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+.story-card__name {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+.story-card__stability {
+  margin-top: auto;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Progressive enhancement: CSS scroll-driven reveal when supported.
+   Without support, the rules above keep every stage fully visible. */
+@supports (animation-timeline: view()) {
+  .story-stage {
+    opacity: 0.3;
+    animation: stage-reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 35%;
+  }
+}
+
+@keyframes stage-reveal {
+  from {
+    opacity: 0.2;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reduced motion: remove non-essential animation, keep all content usable. */
+@media (prefers-reduced-motion: reduce) {
+  .story-stage {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  .story-visual__orb {
+    animation: none !important;
+  }
+  .story-progress__fill,
+  .story-progress__dot,
+  .story-card {
+    transition: none !important;
+  }
+}
+
+/* View Transition tuning, only when motion is allowed. */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.35s;
+  }
+}
