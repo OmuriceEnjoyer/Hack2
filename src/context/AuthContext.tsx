@@ -23,8 +23,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
     api
-      .get<{ user: UserDTO }>('/auth/me')
-      .then((res) => setUser(res.user))
+      .get<UserDTO | { user: UserDTO }>('/auth/me')
+      .then((res) => setUser('user' in res ? res.user : res))
       .catch(() => localStorage.removeItem('token'))
       .finally(() => setLoading(false));
   }, []);
